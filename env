@@ -1,0 +1,2 @@
+MONGO_URI=mongodb+srv://santirider:santirider@cluster0.y16o7el.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+PORT=8080
