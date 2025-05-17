@@ -1,0 +1,43 @@
+<h1>Productos</h1>
+
+{{#each products}}
+  <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+    <h2>{{this.title}}</h2>
+    <p>Precio: ${{this.price}}</p>
+    <p>Categoría: {{this.category}}</p>
+    <p><a href="./products/{{this._id}}">Ver detalles</a></p>
+
+    <form action="/api/carts/:cid/product/{{this._id}}" method="POST" onsubmit="return addToCart(event, '{{this._id}}')">
+      <input type="text" placeholder="ID del carrito" id="cartId-{{this._id}}" required />
+      <button type="submit">Agregar al carrito</button>
+    </form>
+  </div>
+{{/each}}
+
+<div>
+  {{#if hasPrevPage}}
+    <a href="{{prevLink}}">Anterior</a>
+  {{/if}}
+
+  {{#if hasNextPage}}
+    <a href="{{nextLink}}">Siguiente</a>
+  {{/if}}
+</div>
+
+<script>
+  function addToCart(event, productId) {
+    event.preventDefault();
+    const cartId = document.getElementById("cartId-" + productId).value;
+    fetch(`/api/carts/${cartId}/product/${productId}`, {
+      method: "POST"
+    })
+      .then(res => {
+        if (!res.ok) throw new Error("Error al agregar al carrito");
+        alert("Producto agregado al carrito");
+      })
+      .catch(err => {
+        alert(err.message);
+      });
+    return false;
+  }
+</script>

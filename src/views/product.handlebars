@@ -1,0 +1,28 @@
+<h1>{{title}}</h1>
+<p>{{description}}</p>
+<p>Precio: ${{price}}</p>
+<p>Categoría: {{category}}</p>
+<p>Stock: {{stock}}</p>
+
+<form onsubmit="return addToCart(event, '{{_id}}')">
+  <input type="text" placeholder="ID del carrito" id="cartId" required />
+  <button type="submit">Agregar al carrito</button>
+</form>
+
+<script>
+  function addToCart(event, productId) {
+    event.preventDefault();
+    const cartId = document.getElementById("cartId").value;
+    fetch(`/api/carts/${cartId}/product/${productId}`, {
+      method: "POST"
+    })
+      .then(res => {
+        if (!res.ok) throw new Error("Error al agregar al carrito");
+        alert("Producto agregado al carrito");
+      })
+      .catch(err => {
+        alert(err.message);
+      });
+    return false;
+  }
+</script>
